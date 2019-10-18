@@ -1,11 +1,16 @@
 <?php
 namespace api\common\models;
 
+use api\traits\ReadableTimeStampDate;
 use yii\mongodb\ActiveRecord;
 use yii\web\NotFoundHttpException;
+use yii\behaviors\TimestampBehavior;
 
 class Company extends ActiveRecord
 {
+    
+    use ReadableTimeStampDate;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -20,6 +25,16 @@ class Company extends ActiveRecord
 			'_id', 'name', 'address', 'phone',
             'created_at', 'updated_at'
 		];
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**

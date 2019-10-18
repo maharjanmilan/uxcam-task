@@ -4,13 +4,20 @@ namespace api\modules\v1\controllers;
 
 use Yii;
 use api\traits\JwtAuth;
-use yii\data\ActiveDataProvider;
 use yii\rest\Controller;
 use api\common\models\Company;
+use yii\data\ActiveDataProvider;
 
 class CompanyController extends Controller
 {   
     use JwtAuth;
+
+    public $serializer = [
+
+        'class' => 'yii\rest\Serializer',
+        'collectionEnvelope' => 'data',
+
+    ];
 
     public function actionIndex()
     {

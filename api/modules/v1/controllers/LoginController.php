@@ -3,8 +3,8 @@
 namespace api\modules\v1\controllers;
 
 use Yii;
-use api\modules\v1\models\Login;
 use yii\rest\Controller;
+use api\modules\v1\models\Login;
 use yii\web\ServerErrorHttpException;
 
 class LoginController extends Controller

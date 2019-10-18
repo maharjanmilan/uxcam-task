@@ -1,9 +1,8 @@
 <?php
 namespace api\modules\v1\models;
 
-use api\common\models\User;
-use Yii;
 use yii\base\Model;
+use api\common\models\User;
 
 class RegisterUser extends Model
 {
@@ -49,11 +48,6 @@ class RegisterUser extends Model
         return $fields;
     }
 
-    /**
-     * registers user.
-     *
-     * @return bool whether the creating new user was successful
-     */
     public function register()
     {
         if (!$this->validate()) {

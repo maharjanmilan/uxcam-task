@@ -1,6 +1,7 @@
 <?php
 namespace api\common\models;
 
+use api\traits\ReadableTimeStampDate;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\mongodb\ActiveRecord;
@@ -8,6 +9,7 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    use ReadableTimeStampDate;
 	/**
 	 * @inheritdoc
 	 */
@@ -28,10 +30,6 @@ class User extends ActiveRecord implements IdentityInterface
     public function fields()
     {
         $fields = parent::fields();
-
-        // $fields['created_art'] = function($model) {
-        //     return 'a' . $model->created_at;
-        // };
 
         unset($fields['password']);
 
@@ -78,12 +76,6 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['email' => $email]);
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
@@ -105,11 +97,6 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getAuthKey() === $authKey;
     }
     
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
     public function setPassword($password)
     {
         $this->password = Yii::$app->security->generatePasswordHash($password);

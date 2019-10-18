@@ -15,11 +15,11 @@ class JwtTokenGenerator {
         $time = time();
         
         $token = $jwt->getBuilder()
-            ->issuedBy('http://api.uxcam-task.loc')// Configures the issuer (iss claim)
-            ->permittedFor('http://api.uxcam-task.loc')// Configures the audience (aud claim)
-            ->identifiedBy('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
-            ->issuedAt($time)// Configures the time that the token was issue (iat claim)
-            ->expiresAt($time + 3600);// Configures the expiration time of the token (exp claim)
+            ->issuedBy('http://api.uxcam-task.loc')
+            ->permittedFor('http://api.uxcam-task.loc')
+            ->identifiedBy('4f1g23a12aa', true)
+            ->issuedAt($time)
+            ->expiresAt($time + 3600);
 
         if(empty($claims) || !is_array($claims))
             throw new InvalidParamException('Claim must be an array');

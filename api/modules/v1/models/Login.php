@@ -1,10 +1,9 @@
 <?php
 namespace api\modules\v1\models;
 
-use api\classes\JwtTokenGenerator;
-use api\common\models\User;
-use Yii;
 use yii\base\Model;
+use api\common\models\User;
+use api\classes\JwtTokenGenerator;
 
 class Login extends Model
 {
@@ -41,11 +40,6 @@ class Login extends Model
         return $fields;
     }
 
-    /**
-     * Logs in a user using the provided username and password.
-     *
-     * @return bool whether the user is logged in successfully
-     */
     public function attemptLogin()
     {
         return $this->validate();
@@ -59,13 +53,6 @@ class Login extends Model
         ]);
     }
 
-     /**
-     * Validates the password.
-     * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
-     */
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
@@ -76,11 +63,6 @@ class Login extends Model
         }
     }
 
-     /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
     protected function getUser()
     {
         if ($this->_user === null) {
