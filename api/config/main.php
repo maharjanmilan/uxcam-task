@@ -20,7 +20,8 @@ return [
         'request' => [
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
-            ]
+            ],
+            'cookieValidationKey' => 'qchoZwcucgeaz6uXAykPzf1KgoKzkwPM',
         ],       
         'user' => [
             'identityClass' => 'api\common\models\User',
@@ -32,7 +33,7 @@ return [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'trace'],
                 ],
             ],
         ],
@@ -43,15 +44,10 @@ return [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule', 
-                    'controller' => 'v1/country',
-                    'tokens' => [
-                        '{id}' => '<id:\\w+>'
-                    ]
-                    
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule', 
                     'controller' => 'v1/user',
+                    'tokens' => [
+                        '{id}' => '<id:\w+>'
+                    ],
                     'extraPatterns' => [
                         'GET milan' => 'milan'
                     ]
@@ -59,16 +55,34 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule', 
                     'controller' => 'v1/register',
+                    'pluralize' => false,
                     'patterns' => [
-                        'GET milan' => 'milan'
+                        'POST /' => 'register'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule', 
+                    'controller' => 'v1/login',
+                    'pluralize' => false,
+                    'patterns' => [
+                        'POST /' => 'login'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule', 
+                    'controller' => 'v1/company',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\w+>'
                     ]
                 ]
+
                 
             ],        
         ],
         'jwt' => [
-            'class' => \bizley\jwt\Jwt::class,
-            'key' => 'asdfuisdl98d8*dd'
+            'class' => \sizeg\jwt\Jwt::class,
+            'key' => 'cKCjIx9ovK3nk72sh4HTlu8zumTrZ3UJ'
         ],
         
     ],

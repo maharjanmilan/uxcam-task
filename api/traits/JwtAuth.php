@@ -1,13 +1,8 @@
 <?php
 
-namespace api\common\controllers;
+namespace api\traits;
 
-use yii\rest\ActiveController;
-use yii\rest\Controller;
-
-class AuthController extends ActiveController
-{   
-    
+trait JwtAuth {
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -18,7 +13,4 @@ class AuthController extends ActiveController
 
         return $behaviors;
     } 
-
 }
-
-

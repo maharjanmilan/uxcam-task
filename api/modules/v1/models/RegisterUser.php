@@ -8,9 +8,9 @@ use yii\base\Model;
 class RegisterUser extends Model
 {
     public $name;
-    //public $dateOfBirth;
-    //public $country;
-    //public $profession;
+    public $date_of_birth;
+    public $country;
+    public $profession;
     public $email;
     public $password;
 
@@ -21,25 +21,38 @@ class RegisterUser extends Model
     public function rules()
     {
         return [
-            ['name', 'trim'],
-            ['name', 'required'],
+            [['country', 'profession', 'date_of_birth'], 'default'],
+            
+            [['name','country', 'profession', 'date_of_birth','email'], 'trim'],
+            
+            [['name', 'email', 'password'], 'required'],
+            
             ['name', 'string', 'min' => 2, 'max' => 255],
 
-            ['email', 'trim'],
-            ['email', 'required'],
+            
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\api\common\models\User', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            ['date_of_birth', 'date', 'format'=>'yyyy/M/d', 'message' => 'Please enter correct date format YYYY/MM/DD']
         ];
+    }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        unset($fields['password']);
+
+        return $fields;
     }
 
     /**
      * registers user.
      *
-     * @return bool whether the creating new account was successful and email was sent
+     * @return bool whether the creating new user was successful
      */
     public function register()
     {
@@ -50,9 +63,10 @@ class RegisterUser extends Model
         $user = new User();
         $user->name = $this->name;
         $user->email = $this->email;
+        $user->date_of_birth = $this->date_of_birth;
+        $user->country = $this->country;
+        $user->profession = $this->profession;
         $user->setPassword($this->password);
-        // $user->generateAuthKey();
-        // $user->generateEmailVerificationToken();
         return $user->save();
 
     }

@@ -8,7 +8,7 @@ use api\common\models\User;
 use api\modules\v1\models\RegisterUser;
 use yii\rest\ActiveController;
 
-class UserController extends ActiveController
+class UserController extends AuthController
 {   
     public $modelClass = User::class;
     public function behaviors()
@@ -21,14 +21,10 @@ class UserController extends ActiveController
 
         return $behaviors;
     } 
-    
-    public function actionIndex()
-    {
-        return time();
-    }
 
     public function actionMilan()
     {
+        $user =  Yii::$app->user->identity;
         return "I am the lord";
     }
 

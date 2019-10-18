@@ -2,6 +2,7 @@
 namespace api\common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\mongodb\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -19,9 +20,33 @@ class User extends ActiveRecord implements IdentityInterface
     {
 		return [
 			'_id', 'name', 'date_of_birth', 'country', 'profession', 
-			'email', 'password', 'registration_date', 'access_token'
+            'email', 'password', 'registration_date',
+            'created_at', 'updated_at'
 		];
-	}
+    }
+    
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        // $fields['created_art'] = function($model) {
+        //     return 'a' . $model->created_at;
+        // };
+
+        unset($fields['password']);
+
+        return $fields;
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
 	
 	/**
      * {@inheritdoc}
@@ -33,10 +58,11 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * {@inheritdoc}
+     * @param \Lcobucci\JWT\Token $token
      */
     public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['access_token' => $token]);
+    {       
+        return static::findOne(['_id' => (string) $token->getClaim('uid')]);
 	}
 	
 	/**
@@ -45,6 +71,22 @@ class User extends ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->getPrimaryKey();
+    }
+
+    public function findByEmail($email)
+    {
+        return static::findOne(['email' => $email]);
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     /**
@@ -73,25 +115,9 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
+    public function getCreatedArt()
     {
-        return [
-            ['name', 'trim'],
-            ['name', 'required'],
-            ['name', 'string', 'min' => 2, 'max' => 255],
-
-            ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
-            ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\api\common\models\User', 'message' => 'This email address has already been taken.'],
-
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
-        ];
+        return "a" . $this->created_at;
     }
 	
 }
